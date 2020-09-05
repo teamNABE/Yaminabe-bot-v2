@@ -1,0 +1,24 @@
+{
+  "name": "ynbv2",
+  "version": "0.0.1",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teamNABE/Yaminabe-bot-v2"
+  },
+  "author": "huda0209",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/teamNABE/Yaminabe-bot-v2/issues"
+  },
+  "homepage": "https://github.com/teamNABE/Yaminabe-bot-v2#readme",
+  "dependencies": {
+    "discord.js": "^12.2.0",
+    "dotenv": "^8.2.0",
+    "fs": "0.0.1-security"
+  }
+}
