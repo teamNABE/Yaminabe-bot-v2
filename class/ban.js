@@ -5,9 +5,10 @@ Yaminabe-bot v2 for discord bot
 
 main.js :MAIN  'MAIN CODE'
  -msgEvent.js :CLASS  'liten some event and sort the task'
- -kick.js :CLASS  'kick the member'  <= this
- -ban.js :CLASS  'ban the member'
- 
+ -kick.js :CLASS  'kick the member'
+ -ban.js :CLASS  'ban the member'  <= this
+ -announce_new_member :CLASS  'announce new member'
+
 ran by node.js
 
 2020-9-6
@@ -26,7 +27,7 @@ const letter = [[":zero:","0⃣"],[":one:","1⃣"],[":two:","2⃣"],[":three:","
 
 
 
-class banevent {
+class banEvent {
     constructor(client,message,json) {
         this.client = client;
         this.message = message;
@@ -118,10 +119,10 @@ class banevent {
                 });
 
                 await message.channel.send(text);
-                await message.guild.channels.cache.get(json.guild.OperationChannel.Log).send(text);
+                await message.guild.channels.cache.get(json.guild.Channels.Log).send(text);
                 await member.ban(reason[0]);
              }catch(e){console.log("kick system error\n"+e);}; 
     };
 }
 
-module.exports = banevent
+module.exports = banvent
