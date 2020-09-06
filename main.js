@@ -3,9 +3,9 @@
 created by huda0209
 Yaminabe-bot v2 for discord bot 
 
-main.js :MAIN  'MAIN CODE'
+main.js :MAIN  'MAIN CODE'　<= this
  -msgEvent.js :CLASS  'liten some event and sort the task'
- -kick.js :CLASS  'kick the member'  <= this
+ -kick.js :CLASS  'kick the member'  
  -ban.js :CLASS  'ban the member'
  
 ran by node.js
@@ -82,10 +82,6 @@ if(process.env.DISCORD_BOT_TOKEN == undefined || process.env.DISCORD_BOT_TOKEN =
   console.log("please set ENV : DISCORD_BOT_TOKEN");
   process.exit(0);
 }
-if(process.env.TEST_TOKEN == undefined || process.env.TEST_TOKEN == ""){
-  console.log("please set ENV : TEST_TOKEN");
-  process.exit(0);
-}
 
 var token;
 if(process.argv.length>=3){
@@ -94,6 +90,10 @@ if(process.argv.length>=3){
       token = process.env.DISCORD_BOT_TOKEN;
       break;
     case "test" :
+      if(process.env.TEST_TOKEN == undefined || process.env.TEST_TOKEN == ""){
+        console.log("please set ENV : TEST_TOKEN");
+        process.exit(0);
+      }
       token = process.env.TEST_TOKEN;
       break;
     default :
