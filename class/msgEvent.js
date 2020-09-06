@@ -9,6 +9,7 @@ main.js :MAIN  'MAIN CODE'
  -ban.js :CLASS  'ban the member'
  -announce_new_member.js :CLASS  'announce new member'
  -ownerGive.js :CLASS  'give the owner role'
+ -rolePanel.js :CLASS  'reload a role panel and give some some roles'
  
 ran by node.js
 
@@ -16,9 +17,11 @@ ran by node.js
 
 */
 
+//class
 const kickEvent = require('./kick.js');
 const banEvent = require('./ban.js');
 const ownerGive = require('./ownerGive.js');
+const rolePanelEvent = require('./rolePanel.js');
 
 
 class msgEvent {
@@ -36,6 +39,7 @@ class msgEvent {
         const kicke = new kickEvent(client,message,json);
         const bane = new banEvent(client,message,json);
         const ownerGivee = new ownerGive(client,message,json);
+        const rolePanele = new rolePanelEvent(client,json);
 
 
         switch(command){
@@ -52,6 +56,7 @@ class msgEvent {
                 break;
 
             case "reloadpanel" :
+                rolePanele.reloadPanel(message)
                 break;
           }
     }
