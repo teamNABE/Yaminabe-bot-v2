@@ -8,6 +8,8 @@ main.js :MAIN  'MAIN CODE'　<= this
  -kick.js :CLASS  'kick the member'  
  -ban.js :CLASS  'ban the member'
  -announce_new_member :CLASS  'announce new member'
+ -ownerGive.js :CLASS  'give the owner role'
+ -rolePanel.js :CLASS  'reload a role panel and give some some roles'
  
 ran by node.js
 
@@ -32,7 +34,7 @@ const letter = [[":zero:","0⃣"],[":one:","1⃣"],[":two:","2⃣"],[":three:","
 
 //start the bot
 client.on("ready", message => {
-  console.log(`bot is ready! login : ${client.user.tag}`);
+  console.log(`bot is ready! ver: test \nlogin: ${client.user.tag}`);
   //client.user.setActivity('Yaminabe-bot v2 Ver 2.1.1', { type: 'PLAYING' })
   //client.user.setActivity(process.env.ver, { type: 'PLAYING' })
   client.channels.cache.get(json.guild.OperationChannel.Gamerole).messages.fetch(json.guild.MessageId[1][1]);
@@ -50,18 +52,18 @@ client.on("guildUpdate", bot =>{
 client.on("message", async message => {
 
   const prefix = '//'
-  if (!message.content.startsWith(prefix)) return
-  const [command, ...args] = message.content.slice(prefix.length).split(' ')
+  if (message.content.startsWith(prefix)){
+    const [command, ...args] = message.content.slice(prefix.length).split(' ')
+    if(command === "stop"){
+      if(message.author.id === json.guild.Owner || message.member.roles.cache.get(json.guild.Role.top)){
+        console.log(`server stop. by${message.author.tag}`);
+        await message.delete()
+        process.exit(0);}
+    }
 
-  if(command === "stop"){
-    if(message.author.id === json.guild.Owner || message.member.roles.cache.get(json.guild.Role.top)){
-      console.log(`server stop. by${message.author.tag}`);
-      await message.delete()
-      process.exit(0);}
+    const msge = new msgEvent(client,message,json)
+    msge.msgEvent([command, ...args])
   }
-
-  const msge = new msgEvent(client,message,json)
-  msge.msgEvent([command, ...args])
 })
 
 
