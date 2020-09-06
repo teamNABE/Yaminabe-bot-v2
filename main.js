@@ -7,6 +7,7 @@ main.js :MAIN  'MAIN CODE'　<= this
  -msgEvent.js :CLASS  'liten some event and sort the task'
  -kick.js :CLASS  'kick the member'  
  -ban.js :CLASS  'ban the member'
+ -announce_new_member :CLASS  'announce new member'
  
 ran by node.js
 
@@ -21,6 +22,7 @@ const discord = require("discord.js");
 
 //class
 const msgEvent = require('./class/msgEvent.js')
+const anmEvent = require('./class/announce_new_member.js')
 
 //other 
 var json = JSON.parse(fs.readFileSync('./config/setting.json','utf8'));
@@ -33,8 +35,8 @@ client.on("ready", message => {
   console.log(`bot is ready! login : ${client.user.tag}`);
   //client.user.setActivity('Yaminabe-bot v2 Ver 2.1.1', { type: 'PLAYING' })
   //client.user.setActivity(process.env.ver, { type: 'PLAYING' })
-  client.channels.cache.get(json.guild.OperationChannel.Gamerole).messages.fetch(json.guild.MessageId.GamerolePanel);
-  client.channels.cache.get(json.guild.OperationChannel.Compass).messages.fetch(json.guild.MessageId.CompassPanel);
+  client.channels.cache.get(json.guild.OperationChannel.Gamerole).messages.fetch(json.guild.MessageId[1][1]);
+  client.channels.cache.get(json.guild.OperationChannel.Compass).messages.fetch(json.guild.MessageId[0][1]);
 });
 
 //guild update event
@@ -61,6 +63,14 @@ client.on("message", async message => {
   const msge = new msgEvent(client,message,json)
   msge.msgEvent([command, ...args])
 })
+
+
+client.on('guildMemberAdd', member => {
+  const anme = new anmEvent(client,json)
+  anme.anm(member);
+});
+
+
 /*
 
 client.on("guildMemberUpdate", async (olduser,newuser) =>{
