@@ -13,7 +13,7 @@ main.js :MAIN  'MAIN CODE'
  
 ran by node.js
 
-2020-9-6
+2020-10-30
 
 */
 
@@ -28,11 +28,11 @@ class anmEvent {
         const json = this.json;
     
         var message = json.guild.Message.Welcome
-        message = message.replace('{NAME}', `<@${member.id}>`)
-        message = message.replace('{GUILDNAME}', `<@${member.guild.id}>`)
-        message = message.replace('{RULE_CH}', `<#${json.guild.Channels.Rule}>`)
-        message = message.replace('{SERVERINTRO_CH}', `<#${json.guild.Channels.ServerIntroduction}>`)
-        message = message.replace('{SELFINTRO_CH}', `<#${json.guild.Channels.SelfIntroduction}>`)
+        message = message.replace(/{NAME}/g, `<@${member.id}>`)
+        message = message.replace(/{GUILDNAME}/g, `<@${member.guild.id}>`)
+        message = message.replace(/{RULE_CH}/g, `<#${json.guild.Channels.Rule}>`)
+        message = message.replace(/{SERVERINTRO_CH}/g, `<#${json.guild.Channels.ServerIntroduction}>`)
+        message = message.replace(/{SELFINTRO_CH}/g, `<#${json.guild.Channels.SelfIntroduction}>`)
         await member.guild.channels.cache.get(json.guild.Channels.Welcome).send(message);
     }
 }
