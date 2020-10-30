@@ -2,6 +2,7 @@
 /node_modules/
 
 #bot tokens
+setting.json
 .env
 
 #test file
