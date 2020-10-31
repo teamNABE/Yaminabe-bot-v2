@@ -13,18 +13,18 @@ main.js :MAIN  'MAIN CODE'
  
 ran by node.js
 
-2020-10-30
+2020-10-31
 
 */
 async function announce_new_member(member,guildData){
-
-    let message = guildData.Message.Welcome
-    message = message.replace(/{NAME}/g, `<@${member.id}>`)
-    message = message.replace(/{GUILDNAME}/g, `<@${member.guild.id}>`)
-    message = message.replace(/{RULE_CH}/g, `<#${json.guild.Channels.Rule}>`)
-    message = message.replace(/{SERVERINTRO_CH}/g, `<#${json.guild.Channels.ServerIntroduction}>`)
-    message = message.replace(/{SELFINTRO_CH}/g, `<#${json.guild.Channels.SelfIntroduction}>`)
+    if(member.user.bot) return;
+    let message = guildData.Message.Welcome;
+    message = message.replace(/{NAME}/g, `<@${member.id}>`);
+    message = message.replace(/{GUILDNAME}/g, `<@${member.guild.id}>`);
+    message = message.replace(/{RULE_CH}/g, `<#${json.guild.Channels.Rule}>`);
+    message = message.replace(/{SERVERINTRO_CH}/g, `<#${json.guild.Channels.ServerIntroduction}>`);
+    message = message.replace(/{SELFINTRO_CH}/g, `<#${json.guild.Channels.SelfIntroduction}>`);
     await member.guild.channels.cache.get(guildData.Channels.Welcome).send(message);
 }
 
-exports.announce_new_member = announce_new_member
+exports.announce_new_member = announce_new_member;
