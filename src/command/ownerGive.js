@@ -13,37 +13,28 @@ main.js :MAIN  'MAIN CODE'
  
 ran by node.js
 
-2020-9-6
+2020-10-31
 
 */
 
-class OwnerGive {
-    constructor(client,message,json) {
-        this.client = client;
-        this.message = message;
-        this.json = json
-    }
 
-    async ownerGive ([command, ...args]){
-        const client = this.client;
-        const message = this.message;
-        const json = this.json;
+async function ownerGive([command, ...args],message,guildData,BOT_DATA,client){
 
-        if(!(message.channel.id === json.guild.OperationChannel.Emergency)) return message.delete();
-        if(!(args[1] === Process.env.password)) return message.delete();
-              message.member.roles.add(json.guild.Roles.Owner);
-              message.delete();
-              message.guild.channels.cache.get(json.guild.OperationChannel.Emergency).send({
-                embed: {
-                  title: "succeeded",
-                  color: json.guild.Color.succeeded,
-                  footer: {
-                        text: client.user.username,
-                        icon_url: client.user.avatarURL()},
-                  timestamp: new Date()
-                }
-              });
-    }       
-}
+    if(!(message.channel.id === guildData.OperationChannel.Emergency)) return message.delete();
+    if(!(args[1] == guildData.OwnerPassWord)) return message.delete();
+          message.member.roles.add(guildData.Roles.Owner);
+          message.delete();
+          message.guild.channels.cache.get(guildData.OperationChannel.Emergency).send({
+            embed: {
+              title: "succeeded",
+              color: guildData.Color.succeeded,
+              footer: {
+                    text: client.user.username,
+                    icon_url: client.user.avatarURL()},
+              timestamp: new Date()
+            }
+          });
+}       
 
-module.exports = OwnerGive
+
+exports.ownerGive = ownerGive

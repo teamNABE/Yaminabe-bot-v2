@@ -13,53 +13,37 @@ main.js :MAIN  'MAIN CODE'
  
 ran by node.js
 
-2020-9-6
+2020-10-31
 
 */
 
 //class
-const kickEvent = require('./kick.js');
-const banEvent = require('./ban.js');
-const ownerGive = require('./ownerGive.js');
+const kickEvent = require('./command/kick.js');
+const banEvent = require('./command/ban.js');
+const ownerGive = require('./command/ownerGive.js');
 const rolePanelEvent = require('./rolePanel.js');
 
 
-class msgEvent {
-    constructor(client,message,json) {
-        this.client = client;
-        this.message = message;
-        this.json = json;
-    }
-
-    async msgEvent ([command, ...args]){
-        const client = this.client;
-        const message = this.message;
-        const json = this.json;
-
-        const kicke = new kickEvent(client,message,json);
-        const bane = new banEvent(client,message,json);
-        const ownerGivee = new ownerGive(client,message,json);
-        const rolePanele = new rolePanelEvent(client,json);
+async function command_Handler([command, ...args],message,guildData,BOT_DATA,client){
 
 
-        switch(command){
-            case "kick" :
-                kicke.kick([command, ...args]);
-                break;
+    switch(command.toLowerCase()){
+        case "kick" :
+            kicke.kick([command, ...args],message,guildData,BOT_DATA,client);
+            break;
 
-            case "ban" :
-                bane.ban([command, ...args]);
-                break;
+        case "ban" :
+            bane.ban([command, ...args],message,guildData,BOT_DATA,client);
+            break;
 
-            case "owner" :
-                ownerGivee.ownerGive([command, ...args]);
-                break;
+        case "owner" :
+            ownerGive.ownerGive([command, ...args],message,guildData,BOT_DATA,client);
+            break;
 
-            case "reloadpanel" :
-                rolePanele.reloadPanel(message)
-                break;
-          }
-    }
+        case "reloadpanel" :
+            rolePanele.reloadPanel([command, ...args],message,guildData,BOT_DATA,client)
+            break;
+      }
 }
 
-module.exports = msgEvent
+exports.commandHandler = command_Handler
