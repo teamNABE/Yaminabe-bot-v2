@@ -20,8 +20,9 @@ ran by node.js
 //class
 const kickEvent = require('./command/kick.js');
 const banEvent = require('./command/ban.js');
+const punish = require('./command/punish')
 const ownerGive = require('./command/ownerGive.js');
-const rolePanelEvent = require('./rolePanel.js');
+const rolePanelEvent = require('./command/rolePanel.js');
 
 
 async function command_Handler([command, ...args],message,guildData,BOT_DATA,client){
@@ -29,11 +30,8 @@ async function command_Handler([command, ...args],message,guildData,BOT_DATA,cli
 
     switch(command.toLowerCase()){
         case "kick" :
-            kicke.kick([command, ...args],message,guildData,BOT_DATA,client);
-            break;
-
         case "ban" :
-            bane.ban([command, ...args],message,guildData,BOT_DATA,client);
+            punish.punish([command, ...args],message,guildData,BOT_DATA,client);
             break;
 
         case "owner" :
