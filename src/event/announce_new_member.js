@@ -21,9 +21,9 @@ async function announce_new_member(member,guildData){
     let message = guildData.Message.Welcome;
     message = message.replace(/{NAME}/g, `<@${member.id}>`);
     message = message.replace(/{GUILDNAME}/g, `<@${member.guild.id}>`);
-    message = message.replace(/{RULE_CH}/g, `<#${json.guild.Channels.Rule}>`);
-    message = message.replace(/{SERVERINTRO_CH}/g, `<#${json.guild.Channels.ServerIntroduction}>`);
-    message = message.replace(/{SELFINTRO_CH}/g, `<#${json.guild.Channels.SelfIntroduction}>`);
+    message = message.replace(/{RULE_CH}/g, `<#${guildData.Channels.Rule}>`);
+    message = message.replace(/{SERVERINTRO_CH}/g, `<#${guildData.Channels.ServerIntroduction}>`);
+    message = message.replace(/{SELFINTRO_CH}/g, `<#${guildData.Channels.SelfIntroduction}>`);
     await member.guild.channels.cache.get(guildData.Channels.Welcome).send(message);
 }
 
