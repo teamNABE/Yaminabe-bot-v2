@@ -23,7 +23,7 @@ const discord = require("discord.js");
 
 //class
 const commandHandler = require('./src/command-handler.js');
-const anmEvent = require('./src/announce_new_member');
+const anmEvent = require('./src/event/announce_new_member');
 
 //config
 let guildData = require('./config/guild/guildData.json');
