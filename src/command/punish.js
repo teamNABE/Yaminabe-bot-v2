@@ -4,16 +4,15 @@ created by huda0209
 Yaminabe-bot v2 for discord bot 
 
 main.js :MAIN  'MAIN CODE'
- -msgEvent.js :CLASS  'liten some event and sort the task'
- -kick.js :CLASS  'kick the member'  <= this
- -ban.js :CLASS  'ban the member'
- -announce_new_member :CLASS  'announce new member'
- -ownerGive.js :CLASS  'give the owner role'
- -rolePanel.js :CLASS  'reload a role panel and give some some roles'
+ -command-handler.js :module
+ -punish.js :module  <= this
+ -announce_new_member :module
+ -ownerGive.js :module
+ -rolePanel.js :module
  
 ran by node.js
 
-2020-9-6
+2020-11-17
 
 */
 
@@ -22,7 +21,7 @@ const logger = require('../util/logger')
 
 async function punish([command, ...args],message,guildData,BOT_DATA,client){
     if (!(message.channel.id === guildData.OperationChannel.BotPanel))  return message.delete();
-    if (!(message.author.id === guildData.Roles.Owner || message.member.roles.cache.get(guildData.Roles.Nabe)))
+    if (!havePrems([command, ...args],message,guildData))
         return await message.guild.channels.cache.get(guildData.OperationChannel.BotPanel).send({
             embed: {
                 title: "実行する権限がありません。",
@@ -44,8 +43,8 @@ async function punish([command, ...args],message,guildData,BOT_DATA,client){
                 timestamp: new Date()
             }
         });
-    const member = memberSet([command, ...args],message,guildData,BOT_DATA,client);
-    if(member == null || member == undefined)
+    const member = await memberSet([command, ...args],message,guildData,BOT_DATA,client);
+    if(member == undefined)
         return await message.guild.channels.cache.get(guildData.OperationChannel.BotPanel).send({
             embed: {
                 title: "kickするメンバーを1人指定してください",
@@ -57,13 +56,10 @@ async function punish([command, ...args],message,guildData,BOT_DATA,client){
             }
         });
 
+    const reason = await reasonSelecter([command, ...args],message,guildData,client);
 
-    const reason = reasonSelecter([command, ...args],message,guildData,client);
-
-    console.log(member.id)
-    console.log(reason)
     try{
-        messageSender([command, ...args],message,guildData,client,member,reason);
+        await messageSender([command, ...args],message,guildData,client,member,reason);
         if(command.toLowerCase() == "kick") await member.kick(reason[0]);
         if(command.toLowerCase() == "ban") await member.ban(reason[0]);
     }catch(e){
@@ -89,17 +85,17 @@ async function reasonSelecter([command, ...args],message,guildData,client){
       });
 }
 
+
 async function messageSender([command, ...args],message,guildData,client,member,reason){
     let title;
     let fotter;
-    
     if(command.toLowerCase() == "kick"){
-        title = "kick"
-        fotter = guildData.Message.Kick
+        title = "kick";
+        fotter = guildData.Message.Kick;
     };
     if(command.toLowerCase() == "ban"){
-        title = "ban"
-        fotter = guildData.Message.Ban  
+        title = "ban";
+        fotter = guildData.Message.Ban;
     };
 
     await member.send({
@@ -118,15 +114,15 @@ async function messageSender([command, ...args],message,guildData,client,member,
         }
     });
 
-    await message.guild.channels.cache.get(guildData.Channels.Log).send({
+    await message.guild.channels.cache.get(guildData.OperationChannel.Log).send({
         embed: {
             author: {
                 name: member.user.username,
-                icon_url: member.user.defaultAvatarURL()
+                icon_url: client.user.avatarURL()!= null ? client.user.avatarURL() : member.user.defaultAvatarURL
             },
             title: `${title}ed User`,
             description: `<@${member.user.id}>を${title}しました\nreason : ${reason[0]}"\n執行者 : <@${message.member.user.id}>`,
-            color: command.toLowerCase() == kick ? guildData.Color.kick : guildData.Color.ban,
+            color: (command.toLowerCase() == "kick" ? guildData.Color.kick : guildData.Color.ban),
             footer: {
                 text: client.user.username,
                 icon_url: client.user.avatarURL()},
@@ -135,20 +131,29 @@ async function messageSender([command, ...args],message,guildData,client,member,
     });
 };
 
-async function memberSet([command, ...args],message,guildData,BOT_DATA,client){
 
-    let result;
-    const member = args[0].toString().slice(2,(args[0].toString().length-1))
+async function memberSet([command, ...args],message,guildData,BOT_DATA,client){
+    const member = args[0].toString().slice(2,(args[0].toString().length-1));
     try{
-        result = await message.guild.members.fetch(member);
+        return await message.guild.members.fetch(member);
     }catch(e){
-        logger.error(`member error!`)
-        result = null;
-    }
-    console.log(result)
-    return result;
+        logger.error(`member error!`);
+        return undefined;
+    };
 }
 
+
+async function havePrems([command, ...args],message,guildData){
+    if(command.toLowerCase() == "kick"){
+        let perm = message.member._roles.indexOf(guildData.Roles.Owner) == -1 ? false : true;
+        perm = message.member._roles.indexOf(guildData.Roles.Nabe) == -1 ? false : true;
+        return perm;
+    }
+    if(command.toLowerCase() == "ban"){
+        let perm = message.member._roles.indexOf(guildData.Roles.Owner) == -1 ? false : true;
+        return perm;
+    }
+}
 
 
 exports.punish = punish
