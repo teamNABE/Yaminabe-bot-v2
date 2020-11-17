@@ -4,22 +4,19 @@ created by huda0209
 Yaminabe-bot v2 for discord bot 
 
 main.js :MAIN  'MAIN CODE'
- -msgEvent.js :CLASS  'liten some event and sort the task'  <= this
- -kick.js :CLASS  'kick the member'
- -ban.js :CLASS  'ban the member'
- -announce_new_member.js :CLASS  'announce new member'
- -ownerGive.js :CLASS  'give the owner role'
- -rolePanel.js :CLASS  'reload a role panel and give some some roles'
+ -command-handler.js :module  <= this
+ -punish.js :module
+ -announce_new_member :module
+ -ownerGive.js :module
+ -rolePanel.js :module
  
 ran by node.js
 
-2020-10-31
+2020-11-17
 
 */
 
-//class
-const kickEvent = require('./command/kick.js');
-const banEvent = require('./command/ban.js');
+//module
 const punish = require('./command/punish')
 const ownerGive = require('./command/ownerGive.js');
 const rolePanelEvent = require('./command/rolePanel.js');
