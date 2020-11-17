@@ -3,17 +3,16 @@
 created by huda0209
 Yaminabe-bot v2 for discord bot 
 
-main.js :MAIN  'MAIN CODE'　<= this
- -msgEvent.js :CLASS  'liten some event and sort the task'
- -kick.js :CLASS  'kick the member'  
- -ban.js :CLASS  'ban the member'
- -announce_new_member :CLASS  'announce new member'
- -ownerGive.js :CLASS  'give the owner role'
- -rolePanel.js :CLASS  'reload a role panel and give some some roles'
+main.js :MAIN  'MAIN CODE'  <= this
+ -command-handler.js :module
+ -punish.js :module
+ -announce_new_member :module
+ -ownerGive.js :module
+ -rolePanel.js :module
  
 ran by node.js
 
-2020-10-31
+2020-11-17
 
 */
 
@@ -21,7 +20,7 @@ ran by node.js
 const fs = require('fs');
 const discord = require("discord.js");
 
-//class
+//module
 const commandHandler = require('./src/command-handler.js');
 const anmEvent = require('./src/event/announce_new_member');
 
@@ -61,9 +60,13 @@ client.on("message", async message => {
         logger.info(`server was stoped by {cyan}${message.author.tag}`);
         await message.delete();
         client.destroy();
-        process.exit(0)};
-
-    commandHandler.command_Handler([command, ...args],message,guildData,BOT_DATA,client);
+		process.exit(0)};
+	if(command.toLowerCase() === "send"){
+		await message.channel.send("test");
+		console.log(message.member)
+	}
+	
+    commandHandler.commandHandler([command, ...args],message,guildData,BOT_DATA,client);
   }
 })
 
