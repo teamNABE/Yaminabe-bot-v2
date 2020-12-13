@@ -57,6 +57,17 @@ async function punish([command, ...args],message,guildData,BOT_DATA,client){
         });
 
     const reason = await reasonSelecter([command, ...args],message,guildData,client);
+    if(reason == undefined)
+        return await message.guild.channels.cache.get(guildData.OperationChannel.BotPanel).send({
+            embed: {
+                title: "正しい理由選択番号を入力してください。",
+                color: guildData.Color.failed,
+                footer: {
+                      "text": client.user.username,
+                      "icon_url": client.user.avatarURL()},
+                timestamp: new Date()
+            }
+        });
 
     try{
         await messageSender([command, ...args],message,guildData,client,member,reason);
@@ -73,16 +84,7 @@ async function reasonSelecter([command, ...args],message,guildData,client){
     if(command.toLowerCase() == "kick" && args[1] < guildData.KickReason.length) return guildData.KickReason[args[1]];
     if(command.toLowerCase() == "ban" && args[1] < guildData.BanReason.length) return guildData.BanReason[args[1]];
     
-    return await message.guild.channels.cache.get(guildData.OperationChannel.BotPanel).send({
-        embed: {
-            title: "正しい理由選択番号を入力してください。",
-            color: guildData.Color.failed,
-            footer: {
-                  "text": client.user.username,
-                  "icon_url": client.user.avatarURL()},
-            timestamp: new Date()
-        }
-      });
+    return undefined;
 }
 
 
