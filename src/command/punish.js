@@ -118,7 +118,7 @@ async function messageSender([command, ...args],message,guildData,client,member,
         embed: {
             author: {
                 name: member.user.username,
-                icon_url: client.user.avatarURL()!= null ? client.user.avatarURL() : member.user.defaultAvatarURL
+                icon_url: member.user.avatarURL()!= null ? member.user.avatarURL() : member.user.defaultAvatarURL
             },
             title: `${title}ed User`,
             description: `<@${member.user.id}>を${title}しました\nreason : ${reason[0]}"\n執行者 : <@${message.member.user.id}>`,
