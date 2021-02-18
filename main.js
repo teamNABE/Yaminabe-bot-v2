@@ -6,13 +6,14 @@ Yaminabe-bot v2 for discord bot
 main.js :MAIN  'MAIN CODE'  <= this
  -command-handler.js :module
  -punish.js :module
- -announce_new_member :module
  -ownerGive.js :module
  -rolePanel.js :module
+ -announce_new_member :module
+ -reaction.js :module
  
 ran by node.js
 
-2020-11-17
+2021-2-18
 
 */
 
@@ -23,6 +24,7 @@ const discord = require("discord.js");
 //module
 const commandHandler = require('./src/command-handler.js');
 const anmEvent = require('./src/event/announce_new_member');
+const reaction = require("./src/event/reaction")
 
 //other 
 const option = {ws: {intents: discord.Intents.ALL}, restTimeOffset: 10};
@@ -40,8 +42,8 @@ client.on("ready", message => {
   	logger.info(`bot is ready! ver. ${BOT_DATA.VERSION} \n        login: {cyan}${client.user.tag}\n`);
   	//client.user.setActivity('Yaminabe-bot v2 Ver 2.1.1', { type: 'PLAYING' })
   	//client.user.setActivity(process.env.ver, { type: 'PLAYING' })
-  	client.channels.cache.get(guildData.OperationChannel.Gamerole).messages.fetch(guildData.MessageId[1][1]);
-  	client.channels.cache.get(guildData.OperationChannel.Compass).messages.fetch(guildData.MessageId[0][1]);
+  	client.channels.cache.get(guildData.OperationChannel.Gamerole).messages.fetch(guildData.MessageId.GamerolePanel);
+	client.channels.cache.get(guildData.OperationChannel.Compass).messages.fetch(guildData.MessageId.CompassPanel);
 });
 
 //guild update event
@@ -67,9 +69,14 @@ client.on("message", async message => {
 })
 
 
-client.on('guildMemberAdd', member => {
-	anmEvent.announce_new_member(member,guildData);
-});
+client.on("messageReactionAdd", async(messageReaction ,user) =>{
+	reaction.reactionAdd(messageReaction,user,guildData)
+})
+
+client.on("messageReactionRemove", async(messageReaction ,user) =>{
+	reaction.reactionRemove(messageReaction,user,guildData)
+	messageReaction.message.client.user.id
+})
 
 
 /*
