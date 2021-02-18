@@ -20,25 +20,46 @@ ran by node.js
 const punish = require('./command/punish')
 const ownerGive = require('./command/ownerGive.js');
 const rolePanelEvent = require('./command/rolePanel.js');
+const logger = require('./util/logger');
 
 
-async function command_Handler([command, ...args],message,guildData,BOT_DATA,client){
-
+async function commandHandler([command, ...args],message,guildData,BOT_DATA,client){
 
     switch(command.toLowerCase()){
+        case BOT_DATA.COMMAND :
+            if(!(message.author.id == message.guild.ownerID || guildData.Admin.indexOf(message.author.id)>-1)) break;
+            AdminCommandHandler([command, ...args],message,guildData,BOT_DATA,client);
+            break;
+
         case "kick" :
         case "ban" :
             punish.punish([command, ...args],message,guildData,BOT_DATA,client);
             break;
+      };
+}
 
+
+async function AdminCommandHandler([command, ...args],message,guildData,BOT_DATA,client){
+
+    switch(args[0].toLowerCase()){
         case "owner" :
             ownerGive.ownerGive([command, ...args],message,guildData,BOT_DATA,client);
             break;
-
+    
         case "reloadpanel" :
             rolePanele.reloadPanel([command, ...args],message,guildData,BOT_DATA,client)
             break;
-      }
+
+        case "stop" :
+            logger.info(`server was stoped by {cyan}${message.author.tag}`);
+            await message.delete();
+            client.destroy();
+            process.exit(0);
+        
+        default:
+            message.reply(`Unknown command.`);
+            break;
+      };
 }
 
-exports.commandHandler = command_Handler
+exports.commandHandler = commandHandler

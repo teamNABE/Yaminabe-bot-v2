@@ -24,15 +24,15 @@ const discord = require("discord.js");
 const commandHandler = require('./src/command-handler.js');
 const anmEvent = require('./src/event/announce_new_member');
 
-//config
-let guildData = require('./config/guild/guildData.json');
-const BOT_DATA = require('./config/setting.json');
-
 //other 
 const option = {ws: {intents: discord.Intents.ALL}, restTimeOffset: 10};
 const client = new discord.Client(option);
 const logger = require('./src/util/logger');
 const configChecker = require('./src/util/config');
+
+//config
+let guildData = configChecker.getConfig()
+const BOT_DATA = configChecker.getBotData()
 
 
 //start the bot
@@ -56,11 +56,7 @@ client.on("message", async message => {
 
   	if(message.content.startsWith(BOT_DATA.PREFIX)){
     	const [command, ...args] = message.content.slice(BOT_DATA.PREFIX.length).split(' ');
-    	if(command.toLowerCase() === "stop" &&(message.author.id === message.guild.ownerID || guildData.guild.Admin.indexOf(message.author.id)>-1)){
-        logger.info(`server was stoped by {cyan}${message.author.tag}`);
-        await message.delete();
-        client.destroy();
-		process.exit(0)};
+    	
 	if(command.toLowerCase() === "send"){
 		await message.channel.send("test");
 		console.log(message.member)
@@ -94,21 +90,25 @@ client.on("messageReactionAdd", async(messageReaction ,user) =>{
 */
 
 
-configChecker.check(BOT_DATA);
 let token;
-if(process.argv.length>=3){
+if(process.argv.length == 3){
   	switch(process.argv[2]){
-    	case "main" :
-    		token = BOT_DATA.MAIN_TOKEN;
-    		break;
-    	case "div" :
-    		configChecker.divCheck(BOT_DATA);
-    		token = BOT_DATA.DIV_TOKEN;
-    		BOT_DATA.VERSION = `dev(${BOT_DATA.VERSION})`;
-    		break;
-    	default :
-    		logger.error(`Unknown command. \nUsage \n {green}node main.js main{reset} : use main token \n {green}node main.js div{reset} : use divelopment token`);
-    		process.exit(0);
+  	  	case "main" :
+  	    	token = BOT_DATA.MAIN_TOKEN;
+  	    	break;
+  	  	case "div" :
+  	    	configChecker.divCheck(BOT_DATA);
+  	    	token = BOT_DATA.DIV_TOKEN;
+  	    	BOT_DATA.VERSION = `dev(${BOT_DATA.VERSION})`;
+  	    	break;
+  	  	default :
+  	    	logger.error(`Unknown command. \nUsage \n {green}node main.js main{reset} : use main token \n {green}node main.js div{reset} : use divelopment token`);
+  	    	process.exit(0);
   	};
-}else token = BOT_DATA.MAIN_TOKEN;
+}else if(process.argv.length == 2){
+	token = BOT_DATA.MAIN_TOKEN;
+}else{
+	logger.error(`Unknown command. \nUsage \n {green}node main.js main{reset} : use main token \n {green}node main.js div{reset} : use divelopment token`);
+	process.exit(0);
+}
 client.login(token);
