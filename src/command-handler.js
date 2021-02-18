@@ -6,13 +6,14 @@ Yaminabe-bot v2 for discord bot
 main.js :MAIN  'MAIN CODE'
  -command-handler.js :module  <= this
  -punish.js :module
- -announce_new_member :module
  -ownerGive.js :module
  -rolePanel.js :module
+ -announce_new_member :module
+ -reaction.js :module
  
 ran by node.js
 
-2020-11-17
+2021-2-18
 
 */
 
@@ -47,7 +48,7 @@ async function AdminCommandHandler([command, ...args],message,guildData,BOT_DATA
             break;
     
         case "reloadpanel" :
-            rolePanele.reloadPanel([command, ...args],message,guildData,BOT_DATA,client)
+            rolePanelEvent.reloadPanel([command, ...args],message,guildData,BOT_DATA,client)
             break;
 
         case "stop" :
