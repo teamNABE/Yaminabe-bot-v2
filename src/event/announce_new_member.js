@@ -4,16 +4,16 @@ created by huda0209
 Yaminabe-bot v2 for discord bot 
 
 main.js :MAIN  'MAIN CODE'
- -msgEvent.js :CLASS  'liten some event and sort the task'
- -kick.js :CLASS  'kick the member'  
- -ban.js :CLASS  'ban the member'
- -announce_new_member :CLASS  'announce new member'　<= this
- -ownerGive.js :CLASS  'give the owner role'
- -rolePanel.js :CLASS  'reload a role panel and give some some roles'
+ -command-handler.js :module
+ -punish.js :module
+ -ownerGive.js :module
+ -rolePanel.js :module
+ -announce_new_member :module  <= this
+ -reaction.js :module
  
 ran by node.js
 
-2020-10-31
+2021-2-18
 
 */
 async function announce_new_member(member,guildData){
