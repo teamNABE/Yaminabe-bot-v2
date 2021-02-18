@@ -24,7 +24,7 @@ const discord = require("discord.js");
 //module
 const commandHandler = require('./src/command-handler.js');
 const anmEvent = require('./src/event/announce_new_member');
-const reaction = require("./src/event/reaction")
+const reaction = require("./src/event/reaction");
 
 //other 
 const option = {ws: {intents: discord.Intents.ALL}, restTimeOffset: 10};
@@ -33,8 +33,8 @@ const logger = require('./src/util/logger');
 const configChecker = require('./src/util/config');
 
 //config
-let guildData = configChecker.getConfig()
-const BOT_DATA = configChecker.getBotData()
+let guildData = configChecker.getConfig();
+const BOT_DATA = configChecker.getBotData();
 
 
 //start the bot
@@ -57,44 +57,25 @@ client.on("guildUpdate", bot =>{
 client.on("message", async message => {
 
   	if(message.content.startsWith(BOT_DATA.PREFIX)){
-    	const [command, ...args] = message.content.slice(BOT_DATA.PREFIX.length).split(' ');
-    	
-	if(command.toLowerCase() === "send"){
-		await message.channel.send("test");
-		console.log(message.member)
-	}
-	
-    commandHandler.commandHandler([command, ...args],message,guildData,BOT_DATA,client);
-  }
+    	const [command, ...args] = message.content.slice(BOT_DATA.PREFIX.length).split(' ');	
+    	commandHandler.commandHandler([command, ...args],message,guildData,BOT_DATA,client);
+  	}
 })
 
 
 client.on("messageReactionAdd", async(messageReaction ,user) =>{
-	reaction.reactionAdd(messageReaction,user,guildData)
+	reaction.reactionAdd(messageReaction,user,guildData);
 })
+
 
 client.on("messageReactionRemove", async(messageReaction ,user) =>{
-	reaction.reactionRemove(messageReaction,user,guildData)
-	messageReaction.message.client.user.id
+	reaction.reactionRemove(messageReaction,user,guildData);
 })
 
 
-/*
-
-client.on("guildMemberUpdate", async (olduser,newuser) =>{
-  //announce_new_member.js 'announce new member'
-  const anme = new anmevent(olduser,newuser,json)
-  anme.anm()
-})
-
-
-client.on("messageReactionAdd", async(messageReaction ,user) =>{
-  if(user.bot) return;
-  //detect-reaction-rule.js 'detect to react the message for our server's rule'
-  const drre = new detectteactionruleevent(messageReaction ,user, client, json)
-  drre.drr()
-})    
-*/
+client.on('guildMemberAdd', member => {
+	anmEvent.announce_new_member(member,guildData);
+});
 
 
 let token;
