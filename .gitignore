@@ -8,3 +8,6 @@ setting.json
 #test file
 styleCheck.js
 test.js
+
+#process file
+start.bat
