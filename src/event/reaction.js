@@ -69,7 +69,7 @@ async function reactionRemove(messageReaction,user,guildData){
 };
 
 
-function reply(roleName,messageReaction,processName){
+async function reply(roleName,messageReaction,processName){
 	const reply = await messageReaction.message.channel.send({
 			embed: {
 			  description: `${roleName}の${processName}に成功しました。`,
