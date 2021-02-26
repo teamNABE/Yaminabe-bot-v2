@@ -51,19 +51,11 @@ client.on("ready", message => {
 
 });
 
-//guild update event
-client.on("guildUpdate", bot =>{
-  	guildData.guild.GuildName = bot.members.guild.name;
-  	fs.writeFileSync('./config/guild/guildData.json', JSON.stringify(guildData, null, "\t"),'utf8')
-  	console.log("guildUpdate catch");
-})
-
 //message event
 client.on("message", async message => {
-
   	if(message.content.startsWith(BOT_DATA.PREFIX)){
     	const [command, ...args] = message.content.slice(BOT_DATA.PREFIX.length).split(' ');	
-    	commandHandler.commandHandler([command, ...args],message,guildData,BOT_DATA,client);
+    	commandHandler.commandHandler([command, ...args],message,guildData,BOT_DATA);
   	}
 })
 
