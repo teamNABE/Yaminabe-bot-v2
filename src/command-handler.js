@@ -7,20 +7,20 @@ main.js :MAIN  'MAIN CODE'
  -command-handler.js :module  <= this
  -punish.js :module
  -ownerGive.js :module
- -rolePanel.js :module
+ -rolePanelReload.js :module
+ -roleEdit.js  :module
  -announce_new_member :module
  -reaction.js :module
  
 ran by node.js
 
-2021-2-18
+2021-2-26
 
 */
-
-//module
 const punish = require('./command/punish')
 const ownerGive = require('./command/ownerGive.js');
 const rolePanelEvent = require('./command/rolePanel.js');
+const roleEdit = require("./command/rolePanel/roleEdit")
 const logger = require('./util/logger');
 
 
@@ -48,7 +48,12 @@ async function AdminCommandHandler([command, ...args],message,guildData,BOT_DATA
             break;
     
         case "reloadpanel" :
-            rolePanelEvent.reloadPanel([command, ...args],message,guildData,BOT_DATA,client)
+            rolePanelEvent.reloadPanel([command, ...args],message,guildData,BOT_DATA,client);
+            break;
+
+        case "gamerole" :
+        case "compassRank":
+            roleEdit.roleEditCommandHandler([command, ...args],message,guildData,BOT_DATA);
             break;
 
         case "stop" :
