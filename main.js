@@ -7,13 +7,14 @@ main.js :MAIN  'MAIN CODE'  <= this
  -command-handler.js :module
  -punish.js :module
  -ownerGive.js :module
- -rolePanel.js :module
+ -rolePanelReload.js :module
+ -roleEdit.js  :module
  -announce_new_member :module
  -reaction.js :module
  
 ran by node.js
 
-2021-2-18
+2021-2-26
 
 */
 
@@ -39,17 +40,21 @@ const BOT_DATA = configChecker.getBotData();
 
 //start the bot
 client.on("ready", message => {
-  	logger.info(`bot is ready! ver. ${BOT_DATA.VERSION} \n        login: {cyan}${client.user.tag}\n`);
-  	//client.user.setActivity('Yaminabe-bot v2 Ver 2.1.1', { type: 'PLAYING' })
-  	//client.user.setActivity(process.env.ver, { type: 'PLAYING' })
-  	client.channels.cache.get(guildData.OperationChannel.Gamerole).messages.fetch(guildData.MessageId.GamerolePanel);
-	client.channels.cache.get(guildData.OperationChannel.Compass).messages.fetch(guildData.MessageId.CompassPanel);
+  	logger.info(`{green}${BOT_DATA.NAME}{reset} is ready! ver. ${BOT_DATA.VERSION} \n        login: {cyan}${client.user.tag}\n`);
+  	client.user.setActivity(`Yaminabe-bot v2 Ver ${BOT_DATA.VERSION}`, { type: 'PLAYING' })
+
+	for (const key in guildData.loadMessage) {
+		if(guildData.loadMessage.length<1) break;
+		const element = guildData.loadMessage[key];
+		client.channels.cache.get(element.channelId).messages.fetch(element.messageId);		
+	};
+
 });
 
 //guild update event
 client.on("guildUpdate", bot =>{
   	guildData.guild.GuildName = bot.members.guild.name;
-  	fs.writeFileSync('./config/guild/guildData.json',JSON.stringify(guildData),'utf8');
+  	fs.writeFileSync('./config/guild/guildData.json', JSON.stringify(guildData, null, "\t"),'utf8')
   	console.log("guildUpdate catch");
 })
 
