@@ -7,13 +7,14 @@ main.js :MAIN  'MAIN CODE'
  -command-handler.js :module
  -punish.js :module
  -ownerGive.js :module
- -rolePanel.js :module
+ -rolePanelReload.js :module
+ -roleEdit.js  :module
  -announce_new_member :module
  -reaction.js :module  <= this
  
 ran by node.js
 
-2021-2-20
+2021-2-26
 
 */
 
@@ -31,18 +32,20 @@ async function reactionAdd(messageReaction,user,guildData){
 	if(indexId == -1) return;
 	if(!member) return;
 	
-	if(messageReaction.message.id == guildData.MessageId.CompassPanel && indexId < guildData.CompassRank.length){
+	if(messageReaction.message.id == guildData.loadMessage.CompassPanel.messageId && indexId < guildData.CompassRank.length-1){
 		await member.roles.add(guildData.CompassRank[indexId][1]);
 		roleName = guildData.CompassRank[indexId][0];
-		reply(rolename,messageReaction,"付与");
+		reply(roleName,messageReaction,"付与",guildData);
+		logger.info(`reserved "messageReactionAdd" Event for CompassRank panel. suceeded to give ${member.user.tag} ${roleName} role.`);
 	};
 
-	if(messageReaction.message.id == guildData.MessageId.GamerolePanel && indexId < guildData.Gamerole.length){
+	if(messageReaction.message.id == guildData.loadMessage.GamerolePanel.messageId && indexId < guildData.Gamerole.length-1){
 		await member.roles.add(guildData.Gamerole[indexId][1]);
 		roleName = guildData.Gamerole[indexId][0];
-		reply(rolename,messageReaction,"付与");
+		reply(roleName,messageReaction,"付与",guildData);
+		logger.info(`reserved "messageReactionAdd" Event for Gamerole panel. suceeded to give ${member.user.tag} ${roleName} role.`);
 	};
-}
+};
 
 async function reactionRemove(messageReaction,user,guildData){
 	if(user.bot) return;
@@ -55,21 +58,24 @@ async function reactionRemove(messageReaction,user,guildData){
 	if(indexId == -1) return;
 	if(!member) return;
 		
-	if(messageReaction.message.id == guildData.MessageId.CompassPanel && indexId < guildData.CompassRank.length){
+	if(messageReaction.message.id == guildData.loadMessage.CompassPanel.messageId && indexId < guildData.CompassRank.length-1){
 		await member.roles.remove(guildData.CompassRank[indexId][1]);
 		roleName = guildData.CompassRank[indexId][0];
-		reply(rolename,messageReaction,"削除");
+		reply(roleName,messageReaction,"削除",guildData);
+		logger.info(`reserved "messageReactionAdd" Event for CompassRank panel. suceeded to remove ${member.user.tag} ${roleName} role.`);
+
 	};
 
-	if(messageReaction.message.id == guildData.MessageId.GamerolePanel && indexId < guildData.Gamerole.length){
+	if(messageReaction.message.id == guildData.loadMessage.GamerolePanel.messageId && indexId < guildData.Gamerole.length-1){
 		await member.roles.remove(guildData.Gamerole[indexId][1]);
 		roleName = guildData.Gamerole[indexId][0];
-		reply(rolename,messageReaction,"削除");
+		reply(roleName,messageReaction,"削除",guildData);
+		logger.info(`reserved "messageReactionAdd" Event for Gamerole panel. suceeded to remove ${member.user.tag} ${roleName} role.`);
 	};
 };
 
 
-async function reply(roleName,messageReaction,processName){
+async function reply(roleName,messageReaction,processName,guildData){
 	const reply = await messageReaction.message.channel.send({
 			embed: {
 			  description: `${roleName}の${processName}に成功しました。`,
@@ -81,7 +87,7 @@ async function reply(roleName,messageReaction,processName){
 			}
 		});
 	reply.delete({ timeout: 5000 });
-}
+};
 
 
 exports.reactionAdd = reactionAdd;
