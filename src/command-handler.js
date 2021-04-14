@@ -17,6 +17,7 @@ ran by node.js
 2021-2-26
 
 */
+'use strict'
 
 const punish = require('./command/punish')
 const ownerGive = require('./command/ownerGive.js');

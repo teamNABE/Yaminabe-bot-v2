@@ -17,6 +17,7 @@ ran by node.js
 2021-2-26
 
 */
+'use strict'
 
 //node.js modules
 const fs = require('fs');

@@ -17,6 +17,8 @@ ran by node.js
 2021-2-26
 
 */
+'use strict'
+
 const logger = require("../util/logger");
 
 async function announce_new_member(member,guildData){

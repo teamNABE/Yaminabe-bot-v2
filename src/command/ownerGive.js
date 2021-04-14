@@ -17,6 +17,8 @@ ran by node.js
 2021-2-26
 
 */
+'use strict'
+
 const fs = require("fs");
 const logger = require("../util/logger");
 
