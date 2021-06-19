@@ -33,6 +33,7 @@ const option = {ws: {intents: discord.Intents.ALL}, restTimeOffset: 10};
 const client = new discord.Client(option);
 const logger = require('./src/util/logger');
 const configChecker = require('./src/util/config');
+const { cookie } = require('request');
 
 //config
 let guildData = configChecker.getConfig();
@@ -63,6 +64,14 @@ client.on("message", async message => {
 
 client.on("messageReactionAdd", async(messageReaction ,user) =>{
 	reaction.reactionAdd(messageReaction,user,guildData);
+
+	console.log(messageReaction.emoji.name);
+
+	if(user.id == guildData.Members.Suzuki && messageReaction.emoji.name=="thx"){
+		
+	}
+
+
 })
 
 
@@ -73,6 +82,26 @@ client.on("messageReactionRemove", async(messageReaction ,user) =>{
 
 client.on('guildMemberAdd', member => {
 	anmEvent.announce_new_member(member,guildData);
+});
+
+client.on('voiceStateUpdate', async(oldState, newState)=>{
+	
+	const voiceChannel = newState.channel? newState.channel : null;
+
+	if(!voiceChannel) return;
+	let channel;
+
+	for(const key in guildData.VoiceCHLink){
+		if(guildData.VoiceCHLink.length<1) break;
+
+		const element = guildData.VoiceCHLink[key];
+		if(guildData.VoiceCHLink[key].voiceCH != voiceChannel.id) continue;
+		channel = client.channels.cache.get(element.msgCH);
+	};
+
+	if(!channel) return;
+
+	channel.channel//よくわからない
 });
 
 
